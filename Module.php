@@ -59,6 +59,7 @@ class Module
         } catch (ErrorException $exception) {
             $this->triggerErrorEvent($exception);
         }
+
         return;
     }
 
