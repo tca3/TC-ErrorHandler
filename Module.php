@@ -57,12 +57,9 @@ class Module
         try {
             ErrorHandler::stop(true);
         } catch (ErrorException $exception) {
-            $e->setError(Application::ERROR_EXCEPTION);
-            $e->setParam('exception', $exception);
-
-            $events = $e->getApplication()->getEventManager();
-            $events->trigger(MvcEvent::EVENT_RENDER_ERROR, $e);
+            $this->triggerErrorEvent($exception);
         }
+
         return;
     }
 
@@ -107,6 +104,20 @@ class Module
             $result    = $renderer->render($content);
             $model->setVariable('content', $result);
         }
+
+        $this->triggerErrorEvent($exception, $e);
+
         echo $renderer->render($model);
+    }
+
+    public function triggerErrorEvent($exception, $e)
+    {
+        $e->setError(Application::ERROR_EXCEPTION);
+        $e->setParam('exception', $exception);
+
+        $events = $e->getApplication()->getEventManager();
+        $events->trigger(MvcEvent::EVENT_RENDER_ERROR, $e);
+
+        return;
     }
 }
