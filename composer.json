@@ -18,5 +18,10 @@
             "name": "Thomas Cantonnet",
             "email": "contact@redsphere.fr"
         }
-    ]
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
 }
