@@ -1,5 +1,5 @@
 <?php
-namespace Application;
+namespace TCErrorHandler;
 
 use ErrorException;
 use Zend\Mvc\Application;
