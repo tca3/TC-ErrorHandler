@@ -117,5 +117,7 @@ class Module
 
         $events = $e->getApplication()->getEventManager();
         $events->trigger(MvcEvent::EVENT_RENDER_ERROR, $e);
+
+        return;
     }
 }
