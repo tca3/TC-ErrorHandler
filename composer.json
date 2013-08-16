@@ -1,0 +1,22 @@
+{
+    "name": "thomascantonnet/tc-errorhandler",
+    "description": "ErrorHandler for ZF2 apps",
+    "license": "MIT",
+    "keywords": [
+        "zf2"
+    ],
+    "require": {
+        "php": ">=5.3.3",
+    }
+    "autoload": {
+        "classmap": [
+            "Module.php"
+        ]
+    }
+    "authors": [
+        {
+            "name": "Thomas Cantonnet",
+            "email": "contact@redsphere.fr",
+        }
+    ],
+}
