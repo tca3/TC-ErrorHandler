@@ -32,17 +32,17 @@ class Module
         register_shutdown_function(array($this, 'throwFatalError'), $e);
     }
 
-    public function startMonitoringErrors($e)
+    public function startMonitoringErrors(MvcEvent $e)
     {
         ErrorHandler::start(E_ALL);
     }
 
-    public function checkForErrors($e)
+    public function checkForErrors(MvcEvent $e)
     {
         try {
             ErrorHandler::stop(true);
         } catch (ErrorException $exception) {
-            $this->triggerErrorEvent($exception);
+            $this->triggerErrorEvent($exception, $e);
         }
 
         return;
@@ -57,7 +57,7 @@ class Module
         }
     }
 
-    public function outputFatalError($exception, $e)
+    public function outputFatalError(ErrorException $exception, MvcEvent $e)
     {
         // Clean the buffer from previously badly rendered views
         if (ob_get_level() >= 1) {
@@ -95,7 +95,7 @@ class Module
         echo $renderer->render($model);
     }
 
-    public function triggerErrorEvent($exception, $e)
+    public function triggerErrorEvent(ErrorException $exception, MvcEvent $e)
     {
         $e->setError(Application::ERROR_EXCEPTION);
         $e->setParam('exception', $exception);
