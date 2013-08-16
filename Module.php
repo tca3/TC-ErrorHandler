@@ -3,7 +3,6 @@ namespace TCErrorHandler;
 
 use ErrorException;
 use Zend\Mvc\Application;
-use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Stdlib\ErrorHandler;
 
@@ -12,9 +11,6 @@ class Module
     public function onBootstrap(MvcEvent $e)
     {
         $eventManager = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
-
         // Error catching
         ob_start();
         error_reporting(E_ALL);
@@ -34,17 +30,6 @@ class Module
             array($this, 'checkForErrors')
         );
         register_shutdown_function(array($this, 'throwFatalError'), $e);
-    }
-
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
-            ),
-        );
     }
 
     public function startMonitoringErrors($e)
