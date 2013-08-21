@@ -2,6 +2,7 @@
 namespace TCErrorHandler;
 
 use ErrorException;
+use Zend\Console\Request as ConsoleRequest;
 use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 use Zend\Stdlib\ErrorHandler;
@@ -65,6 +66,7 @@ class Module
         }
 
         $sm        = $e->getApplication()->getServiceManager();
+        $request   = $e->getRequest();
         $manager   = $sm->get('viewManager');
         $renderer  = $manager->getRenderer();
         $config    = $sm->get('Config');
@@ -72,6 +74,11 @@ class Module
         $layout    = $manager->getLayoutTemplate();
         $template  = isset($config['view_manager']['exception_template']) ? $config['view_manager']['exception_template'] : null;
         $viewType  = get_class($manager->getViewModel());
+
+        // Console
+        if ($request instanceof ConsoleRequest || (bool) $display !== true) {
+            return;
+        }
 
         // Get layout
         $model     = new $viewType();
