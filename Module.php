@@ -11,6 +11,10 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+        if(php_sapi_name() == 'cli') {
+            return;
+        }
+
         $eventManager = $e->getApplication()->getEventManager();
         // Error catching
         ob_start();
