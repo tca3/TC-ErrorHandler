@@ -47,7 +47,7 @@ class Module
         try {
             ErrorHandler::stop(true);
         } catch (ErrorException $exception) {
-            $this->triggerErrorEvent($exception, $e);
+            $this->outputFatalError($exception, $e);
         }
 
         return;
