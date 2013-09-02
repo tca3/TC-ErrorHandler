@@ -11,7 +11,7 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
-        if(php_sapi_name() == 'cli') {
+        if (php_sapi_name() == 'cli') {
             return;
         }
 
@@ -22,9 +22,15 @@ class Module
         ini_set('display_errors', true);
         $eventManager->attach(
             array(
-                MvcEvent::EVENT_ROUTE
+                MvcEvent::EVENT_BOOTSTRAP
             ),
             array($this, 'startMonitoringErrors')
+        );
+        $eventManager->attach(
+            array(
+                MvcEvent::EVENT_DISPATCH
+            ),
+            array($this, 'checkForNotFoundAction')
         );
         $eventManager->attach(
             array(
@@ -40,6 +46,16 @@ class Module
     public function startMonitoringErrors(MvcEvent $e)
     {
         ErrorHandler::start(E_ALL);
+    }
+
+    public function checkForNotFoundAction(MvcEvent $e)
+    {
+        $action = $e->getRouteMatch()->getParam('action');
+
+        if ($action == 'not-found') {
+            $events = $e->getApplication()->getEventManager();
+            $events->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $e);
+        }
     }
 
     public function checkForErrors(MvcEvent $e)
