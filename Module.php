@@ -36,6 +36,7 @@ class Module
             array(
                 MvcEvent::EVENT_DISPATCH_ERROR,
                 MvcEvent::EVENT_RENDER_ERROR,
+                MvcEvent::EVENT_RENDER,
                 MvcEvent::EVENT_FINISH
             ),
             array($this, 'checkForErrors')
@@ -62,6 +63,7 @@ class Module
     {
         try {
             ErrorHandler::stop(true);
+            $this->startMonitoringErrors($e);
         } catch (ErrorException $exception) {
             $this->outputFatalError($exception, $e);
         }
