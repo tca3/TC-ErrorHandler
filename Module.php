@@ -122,6 +122,7 @@ class Module
         $this->triggerErrorEvent($exception, $e);
 
         echo $renderer->render($model);
+        exit;
     }
 
     public function triggerErrorEvent(ErrorException $exception, MvcEvent $e)
