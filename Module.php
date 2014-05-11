@@ -105,7 +105,6 @@ class Module
         // Get layout
         $model     = new $viewType();
         $model->setTemplate($layout);
-
         // Error page
         if (null !== $template) {
             $content   = new $viewType(
@@ -116,7 +115,10 @@ class Module
             );
             $content->setTemplate($template);
             $result    = $renderer->render($content);
-            $model->setVariable('content', $result);
+            $model->setVariables([
+                'content'   => $result,
+                'exception' => $exception,
+            ]);
         }
 
         $this->triggerErrorEvent($exception, $e);
@@ -131,7 +133,7 @@ class Module
         $e->setParam('exception', $exception);
 
         $events = $e->getApplication()->getEventManager();
-        $events->trigger(MvcEvent::EVENT_RENDER_ERROR, $e);
+        //$events->trigger(MvcEvent::EVENT_RENDER_ERROR, $e);
 
         return;
     }
