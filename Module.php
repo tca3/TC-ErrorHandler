@@ -34,10 +34,7 @@ class Module
         );
         $eventManager->attach(
             array(
-                MvcEvent::EVENT_DISPATCH_ERROR,
-                MvcEvent::EVENT_RENDER_ERROR,
-                MvcEvent::EVENT_RENDER,
-                MvcEvent::EVENT_FINISH
+                '*'
             ),
             array($this, 'checkForErrors')
         );
