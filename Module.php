@@ -20,24 +20,14 @@ class Module
         ob_start();
         error_reporting(E_ALL);
         ini_set('display_errors', true);
-        $eventManager->attach(
-            array(
-                MvcEvent::EVENT_BOOTSTRAP
-            ),
-            array($this, 'startMonitoringErrors')
-        );
-        $eventManager->attach(
-            array(
-                MvcEvent::EVENT_DISPATCH
-            ),
-            array($this, 'checkForNotFoundAction')
-        );
-        $eventManager->attach(
-            array(
-                '*'
-            ),
-            array($this, 'checkForErrors')
-        );
+
+        $eventManager->attach(MvcEvent::EVENT_BOOTSTRAP, array($this, 'startMonitoringErrors'));
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'checkForNotFoundAction'));
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'checkForErrors'));
+        $eventManager->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'checkForErrors'));
+        $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'checkForErrors'));
+        $eventManager->attach(MvcEvent::EVENT_FINISH, array($this, 'checkForErrors'));
+
         register_shutdown_function(array($this, 'throwFatalError'), $e);
     }
 
